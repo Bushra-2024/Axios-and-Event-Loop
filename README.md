@@ -54,7 +54,7 @@ async function postUser(user) {
 }
 ```
 
-```jvascript
+```javascript
 //edit,put
 async function putUser(user) {
     try {
