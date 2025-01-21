@@ -67,4 +67,75 @@ async function putUser(user) {
 ```
 
 ---
+
+![image](https://github.com/user-attachments/assets/90010753-7aa0-4788-bc3b-d52c6fe7be6d)
+
+
+
 # Event Loop
+
+The Event Loop in JavaScript is a mechanism that ensures smooth execution of code, especially when dealing with asynchronous tasks. It enables JavaScript to handle non-blocking operations and allows multiple tasks to run without halting the main thread.
+
+### Key Components 
+
+1. **Call Stack**: 
+   - The call stack is where synchronous code is executed. 
+   - Each function call is added to the stack, and once completed, it is removed.
+   - Only synchronous code runs directly on the call stack.
+
+2. **Web APIs**:
+   - Asynchronous tasks like setTimeout, setInterval, or DOM events are handled by Web APIs provided by the browser or Node.js.
+   - These tasks run outside the main call stack to avoid blocking the execution.
+
+3. **Callback Queue**:
+   - Once an asynchronous task completes in the Web API, its associated callback is sent to the **callback queue**.
+   - The event loop checks the callback queue and moves tasks to the call stack when it is empty.
+
+4. **Microtasks and Macrotasks**:
+   - **Microtasks**: Include tasks like Promises or MutationObserver. They have higher priority than macrotasks.
+   - **Macrotasks**: Include tasks like setTimeout, setInterval, or setImmediate.
+   - After each synchronous execution, the event loop clears all microtasks before moving on to the macrotasks.
+
+---
+
+### Simplified Explanation of the Event Loop Workflow:
+
+1. **Synchronous Code**:
+   - All synchronous tasks are executed first, one by one, on the call stack.
+
+2. **Asynchronous Code**:
+   - Functions like setTimeout or fetch are sent to Web APIs. These APIs process them and send their callbacks to the respective queues (microtask or macrotask) once completed.
+
+3. **Microtasks First**:
+   - The event loop prioritizes microtasks (like `Promise.then) and executes them before processing any macrotask.
+
+4. **Macrotasks Next**:
+   - After clearing all microtasks, the event loop moves to macrotasks (like setTimeout).
+
+---
+
+### Example to Clarify the Event Loop:
+
+```javascript
+console.log('Start'); // Synchronous, added to the call stack
+
+setTimeout(() => {
+  console.log('Timeout'); // Macrotask
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('Promise'); // Microtask
+});
+
+console.log('End'); // Synchronous, added to the call stack
+```
+
+**Output**:
+```
+Start
+End
+Promise
+Timeout
+```
+
+
